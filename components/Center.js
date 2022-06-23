@@ -9,24 +9,36 @@ import { playlistIdState, playlistState } from "../atoms/playlistAtom";
 import Songs from "./Songs";
 import { signOut } from "next-auth/react";
 
-const colors = [
-  "bg-indigo-500",
-  "bg-blue-500",
-  "bg-green-500",
-  "bg-red-500",
-  "bg-pink-500",
-  "bg-purple-500",
-  "bg-fuchsia-500",
+const fromColors = [
+  "from-indigo-500",
+  "from-blue-500",
+  "from-green-500",
+  "from-red-500",
+  "from-pink-500",
+  "from-purple-500",
+  "from-fuchsia-500",
+];
+const toColors = [
+  "to-indigo-900",
+  "to-blue-900",
+  "to-green-900",
+  "to-red-900",
+  "to-pink-900",
+  "to-purple-900",
+  "to-fuchsia-900",
 ];
 function Center() {
   const { data: session } = useSession();
   const spotifyApi = useSpotify();
-  const [color, setColor] = useState(null);
+  const [fromColor, setFromColor] = useState(null);
+  const [toColor, setToColor] = useState(null);
   const playlistId = useRecoilValue(playlistIdState);
   const [playlist, setPlaylist] = useRecoilState(playlistState);
   console.log(playlist);
+
   useEffect(() => {
-    setColor(shuffle(colors).pop());
+    setFromColor(shuffle(fromColors).pop());
+    setToColor(shuffle(toColor).pop());
   }, [playlistId]);
 
   useEffect(() => {
@@ -37,13 +49,16 @@ function Center() {
       })
       .catch((err) => console.log("Something went wrong", err));
   }, [spotifyApi, playlistId]);
-  console.log(playlist);
+
+  console.log("PLAYLIST INFO", playlist);
   return (
-    <div className={`flex-grow h-screen overflow-y-scroll ${color}`}>
+    <div
+      className={`flex-grow h-screen overflow-y-scroll overflow-x-hidden bg-transparent pb-28`}
+    >
       <header className="flex relative w-full items-end justify-end p-2">
         <div
           onClick={() => signOut()}
-          className="flex items-center bg-black space-x-3 opacity-90 hover:opacity-80
+          className="flex items-center space-x-3 opacity-90 hover:opacity-80
         cursor-pointer rounded-full p-1 pr-2 text-white"
         >
           <img
@@ -55,19 +70,23 @@ function Center() {
           <ChevronDownIcon className="h-5 w-5" />
         </div>
       </header>
-      <section className={`flex items-end space-x-7 h-80 p-8`}>
+      <section className={`flex items-end space-x-7 p-8`}>
         <div className="flex flex-col">
-          <h1 className="text-2xl font-bold pb-5">
-            {playlist?.owner.display_name}
-          </h1>
           <img
-            className="w-44 object-contain shadow-2xl"
+            className="w-[10vw] object-contain shadow-2xl"
             src={playlist?.images?.[0]?.url}
             alt=""
           />
         </div>
         <div className="flex flex-col">
           <span>
+            <p>
+              {playlist
+                ? playlist?.public
+                  ? "PUBLIC PLAYLIST"
+                  : "PRIVATE PLAYLIST"
+                : ""}{" "}
+            </p>
             <p className="text-4xl">{playlist?.description}</p>
             <h1 className="text-2xl md:text-3xl xl:text-5xl font-bold">
               {playlist?.name}
@@ -81,8 +100,8 @@ function Center() {
           </span>
         </div>
       </section>
-      <div className="border-t-white bg-black/50 min-h-full pt-10">
-        <Songs color={color} />
+      <div className="border-t-white">
+        <Songs />
       </div>
     </div>
   );

@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import {
   HomeIcon,
   SearchIcon,
@@ -6,6 +7,7 @@ import {
   RssIcon,
   PlusCircleIcon,
   CogIcon,
+  ChevronDoubleDownIcon,
 } from "@heroicons/react/outline";
 import { signOut, useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
@@ -13,12 +15,16 @@ import ButtonsSidebar from "./ButtonsSidebar";
 import useSpotify from "../hooks/useSpotify";
 import { useRecoilState } from "recoil";
 import { playlistIdState } from "../atoms/playlistAtom";
+import useSongInfo from "../hooks/useSongInfo";
+import { imageState } from "../atoms/sidebarAtom";
 
 function Sidebar() {
   const spotifyApi = useSpotify();
   const { data: session, status } = useSession();
   const [playlists, setPlaylists] = useState([]);
   const [playlistId, setPlaylistId] = useRecoilState(playlistIdState);
+
+  const [currentImageState, setCurrentImageState] = useRecoilState(imageState);
 
   useEffect(() => {
     if (spotifyApi.getAccessToken()) {
@@ -27,14 +33,15 @@ function Sidebar() {
       });
     }
   }, [session, spotifyApi]);
+
+  const songInfo = useSongInfo();
   return (
-    <div
-      className="text-gray-500 p-5 text-xs lg:text-sm border-r  border-gray-900
-     overflow-y-scroll h-screen scrollbar-hide min-w-[12rem] sm:max-w-[12rem] lg:max-w-[15rem]
-     hidden md:inline-flex pb-36
-     "
-    >
-      <div className="space-y-4">
+    <div className="flex-col text-xs lg:text-sm min-w-[12rem] sm:max-w-[12rem] lg:max-w-[15rem] hidden md:flex font-black text-white">
+      <div
+        className={`flex flex-col space-y-4 p-5 items-start ${
+          currentImageState ? "h-[60vh]" : "h-screen"
+        } scrollbar-hide overflow-y-scroll`}
+      >
         <button
           className="flex space-x-2 items-center"
           onClick={() => signOut()}
@@ -54,11 +61,26 @@ function Sidebar() {
           <p
             onClick={() => setPlaylistId(playlist.id)}
             key={playlist.id}
-            className="hover:text-white cursor-pointer"
+            className="cursor-pointer"
           >
             {playlist.name}
           </p>
         ))}
+      </div>
+      <div
+        onClick={() => setCurrentImageState(!currentImageState)}
+        className="relative h-[40vh] z-50 group cursor-pointer"
+      >
+        <img
+          className={`object-contain  ${
+            currentImageState ? "" : "hidden"
+          } transition-transform duration-150`}
+          src={songInfo?.album.images?.[0]?.url}
+          alt=""
+        />
+        <div className="absolute top-1 flex items-center justify-center w-full">
+          <ChevronDoubleDownIcon className="w-5 hidden group-hover:inline text-white" />
+        </div>
       </div>
     </div>
   );

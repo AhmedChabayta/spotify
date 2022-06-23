@@ -9,6 +9,7 @@ import {
   VolumeUpIcon,
 } from "@heroicons/react/solid";
 import {
+  ChevronDoubleUpIcon,
   HeartIcon,
   VolumeUpIcon as VolumeDownIcon,
 } from "@heroicons/react/outline";
@@ -20,6 +21,7 @@ import { playlistIdState } from "../atoms/playlistAtom";
 import { currentTrackIdState, isPlayingState } from "../atoms/songAtom";
 import useSongInfo from "../hooks/useSongInfo";
 import useSpotify from "../hooks/useSpotify";
+import { imageState } from "../atoms/sidebarAtom";
 
 function Player() {
   const spotifyApi = useSpotify();
@@ -28,6 +30,8 @@ function Player() {
     useRecoilState(currentTrackIdState);
   const [isPlaying, setIsPlaying] = useRecoilState(isPlayingState);
   const [volume, setVolume] = useState(50);
+
+  const [currentImageState, setCurrentImageState] = useRecoilState(imageState);
 
   const songInfo = useSongInfo();
 
@@ -76,34 +80,49 @@ function Player() {
     }, 400),
     []
   );
-
-  console.log(songInfo);
   return (
     <div
-      className={`h-24 bg-black shadow-2xl border-t border-gray-900 text-white
+      className={`relative h-20 text-white font-bold hover:bg-white hover:text-black transition-colors duration-150
     grid grid-cols-3 text-xs md:text-base px-2 md:px-8`}
     >
-      <div className="flex items-center space-x-4">
-        <img
-          className="hidden md:inline h-10 w-10"
-          src={songInfo?.album.images?.[0]?.url}
-          alt=""
-        />
+      <div className="flex items-center space-x-4 ">
+        <span
+          onClick={() => setCurrentImageState(!currentImageState)}
+          className="group relative"
+        >
+          <img
+            className={`w-14 object-contain ${
+              currentImageState ? "hidden" : "inline"
+            } cursor-pointer relative`}
+            src={songInfo?.album.images?.[0]?.url}
+            alt=""
+          />
+          <ChevronDoubleUpIcon className="w-5 absolute top-0 left-3 invisible group-hover:visible" />
+        </span>
         <div className="">
-          <h3>{songInfo?.name}</h3>
-          <p>{songInfo?.artists?.[0]?.name}</p>
+          <h3 className="underline truncate max-w-xs">{songInfo?.name}</h3>
+          <p className="font-semibold">{songInfo?.artists?.[0]?.name}</p>
         </div>
       </div>
-      <div className="flex items-center justify-evenly">
+      <div
+        className="flex relative items-center justify-evenly
+      before:content-[''] before:absolute before:w-12 before:h-12 before:bg-gradient-to-b before:from-blue-500 before:rounded-full before:blur before:left-50 before:top-5 before:animate-pulse"
+      >
         <SwitchHorizontalIcon className="button" />
         <RewindIcon
           onClick={() => spotifyApi.skipToPrevious()}
           className="button"
         />
         {isPlaying ? (
-          <PauseIcon onClick={handlePlayPause} className="button h-10 w-10" />
+          <PauseIcon
+            onClick={handlePlayPause}
+            className="button h-10 w-10 z-50 relative"
+          />
         ) : (
-          <PlayIcon onClick={handlePlayPause} className="button h-10 w-10" />
+          <PlayIcon
+            onClick={handlePlayPause}
+            className="button h-10 w-10 z-50 relative"
+          />
         )}
         <FastForwardIcon
           onClick={() => spotifyApi.skipToNext()}
