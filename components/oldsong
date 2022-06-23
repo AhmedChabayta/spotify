@@ -1,0 +1,41 @@
+<div
+  onClick={playSong}
+  className={`flex cursor-pointer hover:bg-black/20 group py-4 px-5
+       hover:rounded-lg whitespace-nowrap min-w-[33vw]`}
+>
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Title</th>
+      <th>Album</th>
+      <th>Date Added</th>
+      <th>Duration</th>
+    </tr>
+  </thead>
+  {/* index artist name and song name */}
+  <div className=" flex items-center space-x-4 min-w-[33vw]">
+    <div className="flex items-center space-x-4">
+      <p>{order}</p>
+      <img
+        className="h-10 w-10 cursor-pointer"
+        src={track.track.album.images[0].url}
+        alt=""
+      />
+    </div>
+    <div className="flex flex-col truncate">
+      <p>{track.track.name} </p>
+      <p>{track.track.artists[0].name}</p>
+    </div>
+  </div>
+  {/*  end index artist name and song name */}
+
+  <div className="flex items-center truncate min-w-[33vw]">
+    <p>{track.track.album.name}</p>
+  </div>
+
+  <div>
+    <p className="cursor-default min-w-[33vw]">
+      {millisToMinutesAndSeconds(track.track.duration_ms)}
+    </p>
+  </div>
+</div>;
