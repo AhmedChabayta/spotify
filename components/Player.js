@@ -144,7 +144,7 @@ function Player() {
           className="button"
         />
         <input
-          className="w-14 md:w-28"
+          className="w-14 md:w-28 cursor-grab active:cursor-grabbing"
           type="range"
           value={volume}
           onChange={(e) => setVolume(Number(e.target.value))}
