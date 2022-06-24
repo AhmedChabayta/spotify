@@ -2,7 +2,6 @@
 import { ChevronDownIcon } from "@heroicons/react/outline";
 import { useSession } from "next-auth/react";
 import React, { useEffect, useState } from "react";
-import { shuffle } from "lodash";
 import useSpotify from "../hooks/useSpotify";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { playlistIdState, playlistState } from "../atoms/playlistAtom";
@@ -11,37 +10,12 @@ import { signOut } from "next-auth/react";
 import { FlexCol, FlexRow, Text, Wrapper } from "../styles/common.styles";
 import tw from "twin.macro";
 
-const fromColors = [
-  "from-indigo-500",
-  "from-blue-500",
-  "from-green-500",
-  "from-red-500",
-  "from-pink-500",
-  "from-purple-500",
-  "from-fuchsia-500",
-];
-const toColors = [
-  "to-indigo-900",
-  "to-blue-900",
-  "to-green-900",
-  "to-red-900",
-  "to-pink-900",
-  "to-purple-900",
-  "to-fuchsia-900",
-];
 function Center() {
   const { data: session } = useSession();
   const spotifyApi = useSpotify();
-  const [fromColor, setFromColor] = useState(null);
-  const [toColor, setToColor] = useState(null);
   const playlistId = useRecoilValue(playlistIdState);
   const [playlist, setPlaylist] = useRecoilState(playlistState);
   console.log(playlist);
-
-  useEffect(() => {
-    setFromColor(shuffle(fromColors).pop());
-    setToColor(shuffle(toColor).pop());
-  }, [playlistId]);
 
   useEffect(() => {
     spotifyApi
