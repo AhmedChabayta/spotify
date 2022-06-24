@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @next/next/no-img-element */
 import { ChevronDownIcon } from "@heroicons/react/outline";
 import { useSession } from "next-auth/react";
@@ -24,7 +25,7 @@ function Center() {
         setPlaylist(data.body);
       })
       .catch((err) => console.log("Something went wrong", err));
-  }, [spotifyApi, playlistId, setPlaylist]);
+  }, [spotifyApi, playlistId]);
 
   console.log("PLAYLIST INFO", playlist);
   return (
