@@ -34,7 +34,7 @@ export default function Home() {
     setFromColor(shuffle(fromColors).pop());
     setToColor(shuffle(toColors).pop());
   }, [playlistId]);
-  console.log(toColor);
+
   return (
     <div
       className={`bg-gradient-to-t text-white from-${fromColor} to-${toColor} h-screen overflow-hidden`}
