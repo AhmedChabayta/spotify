@@ -1,10 +1,9 @@
 import { shuffle } from "lodash";
 import Head from "next/head";
-import Image from "next/image";
 import { useEffect, useState } from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { playlistIdState, playlistState } from "../atoms/playlistAtom";
-import Center from "../components/center";
+import { useRecoilValue } from "recoil";
+import { playlistIdState } from "../atoms/playlistAtom";
+import Center from "../components/Center";
 import Player from "../components/Player";
 import Sidebar from "../components/Sidebar";
 
