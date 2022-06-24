@@ -8,6 +8,8 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import { playlistIdState, playlistState } from "../atoms/playlistAtom";
 import Songs from "./Songs";
 import { signOut } from "next-auth/react";
+import { FlexCol, FlexRow, Text, Wrapper } from "../styles/common.styles";
+import tw from "twin.macro";
 
 const fromColors = [
   "from-indigo-500",
@@ -52,13 +54,11 @@ function Center() {
 
   console.log("PLAYLIST INFO", playlist);
   return (
-    <div
-      className={`flex-grow h-screen overflow-y-scroll overflow-x-hidden bg-transparent pb-28`}
-    >
-      <header className="flex relative w-full items-end justify-end p-2">
-        <div
+    <Wrapper tw="flex-grow h-screen overflow-y-scroll overflow-x-hidden bg-transparent pb-28">
+      <FlexRow tw="relative w-full items-end justify-end p-2">
+        <FlexRow
           onClick={() => signOut()}
-          className="flex items-center space-x-3 opacity-90 hover:opacity-80
+          tw="items-center space-x-3 opacity-90 hover:opacity-80
         cursor-pointer rounded-full p-1 pr-2 text-white"
         >
           <img
@@ -68,42 +68,42 @@ function Center() {
           />
           <h2>{session?.user.name}</h2>
           <ChevronDownIcon className="h-5 w-5" />
-        </div>
-      </header>
-      <section className={`flex items-end space-x-7 p-8`}>
-        <div className="flex flex-col">
+        </FlexRow>
+      </FlexRow>
+      <FlexRow tw="items-end space-x-7 p-8">
+        <FlexCol>
           <img
             className="w-[10vw] object-contain shadow-2xl"
             src={playlist?.images?.[0]?.url}
             alt=""
           />
-        </div>
-        <div className="flex flex-col">
-          <span>
-            <p>
+        </FlexCol>
+        <FlexCol className="flex flex-col">
+          <FlexCol>
+            <Text>
               {playlist
                 ? playlist?.public
                   ? "PUBLIC PLAYLIST"
                   : "PRIVATE PLAYLIST"
                 : ""}{" "}
-            </p>
-            <p className="text-4xl">{playlist?.description}</p>
+            </Text>
+            <Text tw="text-4xl">{playlist?.description}</Text>
             <h1 className="text-2xl md:text-3xl xl:text-5xl font-bold">
               {playlist?.name}
             </h1>
-          </span>
-          <span className="flex text-xs space-x-4">
-            <p className="">
+          </FlexCol>
+          <FlexRow tw="text-xs space-x-4">
+            <Text>
               {playlist ? `${playlist?.followers.total} Followers` : ""}
-            </p>
+            </Text>
             <h1 className="font-bold">{playlist?.owner.display_name}</h1>
-          </span>
-        </div>
-      </section>
-      <div className="border-t-white">
+          </FlexRow>
+        </FlexCol>
+      </FlexRow>
+      <Wrapper tw="border-t-white">
         <Songs />
-      </div>
-    </div>
+      </Wrapper>
+    </Wrapper>
   );
 }
 

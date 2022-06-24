@@ -22,6 +22,14 @@ import { currentTrackIdState, isPlayingState } from "../atoms/songAtom";
 import useSongInfo from "../hooks/useSongInfo";
 import useSpotify from "../hooks/useSpotify";
 import { imageState } from "../atoms/sidebarAtom";
+import {
+  FlexCol,
+  FlexRow,
+  Grid,
+  ImageWrapper,
+  Text,
+} from "../styles/common.styles";
+import tw from "twin.macro";
 
 function Player() {
   const spotifyApi = useSpotify();
@@ -29,7 +37,7 @@ function Player() {
   const [currentTrackId, setCurrentTrackId] =
     useRecoilState(currentTrackIdState);
   const [isPlaying, setIsPlaying] = useRecoilState(isPlayingState);
-  const [volume, setVolume] = useState(50);
+  const [volume, setVolume] = useState(100);
 
   const [currentImageState, setCurrentImageState] = useRecoilState(imageState);
 
@@ -64,7 +72,7 @@ function Player() {
   useEffect(() => {
     if (spotifyApi.getAccessToken() && !currentTrackId) {
       fetchCurrentSong();
-      setVolume(50);
+      setVolume(100);
     }
   }, [currentTrackIdState, spotifyApi, session]);
 
@@ -81,12 +89,12 @@ function Player() {
     []
   );
   return (
-    <div
-      className={`relative h-20 text-white font-bold hover:bg-white hover:text-black transition-colors duration-150
-    grid grid-cols-3 text-xs md:text-base px-2 md:px-8`}
+    <Grid
+      tw="relative h-20 font-bold hover:bg-white hover:text-black transition-colors duration-150 
+      grid-cols-3 text-xs md:text-base px-2 md:px-8"
     >
-      <div className="flex items-center space-x-4 ">
-        <span
+      <FlexRow className="flex items-center space-x-4 ">
+        <ImageWrapper
           onClick={() => setCurrentImageState(!currentImageState)}
           className="group relative"
         >
@@ -98,14 +106,14 @@ function Player() {
             alt=""
           />
           <ChevronDoubleUpIcon className="w-5 absolute top-0 left-3 invisible group-hover:visible" />
-        </span>
-        <div className="">
+        </ImageWrapper>
+        <FlexCol>
           <h3 className="underline truncate max-w-xs">{songInfo?.name}</h3>
-          <p className="font-semibold">{songInfo?.artists?.[0]?.name}</p>
-        </div>
-      </div>
-      <div
-        className="flex relative items-center justify-evenly
+          <Text tw="font-semibold">{songInfo?.artists?.[0]?.name}</Text>
+        </FlexCol>
+      </FlexRow>
+      <FlexRow
+        className="relative items-center justify-evenly
       before:content-[''] before:absolute before:w-12 before:h-12 before:bg-gradient-to-b before:from-blue-500 before:rounded-full before:blur before:left-50 before:top-5 before:animate-pulse"
       >
         <SwitchHorizontalIcon className="button" />
@@ -129,8 +137,8 @@ function Player() {
           className="button"
         />
         <ReplyIcon className="button" />
-      </div>
-      <div className="flex items-center space-x-3 md:space-x-4 justify-end">
+      </FlexRow>
+      <FlexRow className="flex items-center space-x-3 md:space-x-4 justify-end">
         <VolumeDownIcon
           onClick={() => volume > 0 && setVolume(volume - 10)}
           className="button"
@@ -147,8 +155,8 @@ function Player() {
           onClick={() => volume < 100 && setVolume(volume + 10)}
           className="button"
         />
-      </div>
-    </div>
+      </FlexRow>
+    </Grid>
   );
 }
 

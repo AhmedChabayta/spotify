@@ -17,6 +17,15 @@ import { useRecoilState } from "recoil";
 import { playlistIdState } from "../atoms/playlistAtom";
 import useSongInfo from "../hooks/useSongInfo";
 import { imageState } from "../atoms/sidebarAtom";
+import {
+  FlexCol,
+  FlexRow,
+  Hr,
+  Image,
+  ImageWrapper,
+  Text,
+} from "../styles/common.styles";
+import tw from "twin.macro";
 
 function Sidebar() {
   const spotifyApi = useSpotify();
@@ -33,56 +42,52 @@ function Sidebar() {
       });
     }
   }, [session, spotifyApi]);
-
   const songInfo = useSongInfo();
+  console.log("PLAYLISTS", playlists);
   return (
-    <div className="flex-col text-xs lg:text-sm min-w-[12rem] sm:max-w-[12rem] lg:max-w-[15rem] hidden md:flex font-black text-white">
-      <div
-        className={`flex flex-col space-y-4 p-5 items-start ${
+    <FlexCol tw="text-xs lg:text-sm min-w-[12rem] sm:max-w-[12rem] lg:max-w-[15rem] hidden md:flex font-black text-white">
+      <FlexCol
+        className={`space-y-4 p-5 pb-10 items-start ${
           currentImageState ? "h-[60vh]" : "h-screen"
         } scrollbar-hide overflow-y-scroll`}
       >
-        <button
-          className="flex space-x-2 items-center"
-          onClick={() => signOut()}
-        >
-          <CogIcon className="h-5 w-5" />
-          <p> Log Out</p>
-        </button>
         <ButtonsSidebar BtnText="Home" Icon={HomeIcon} />
         <ButtonsSidebar BtnText="Search" Icon={SearchIcon} />
         <ButtonsSidebar BtnText="Library" Icon={LibraryIcon} />
-        <hr className="border-t-[0.1px] border-gray-900" />
         <ButtonsSidebar BtnText="Create Playlist" Icon={PlusCircleIcon} />
         <ButtonsSidebar BtnText="Liked Songs" Icon={HeartIcon} />
         <ButtonsSidebar BtnText="Your Episodes" Icon={RssIcon} />
-        <hr className="border-t-[0.1px] border-gray-900" />
+
+        <Hr tw="border-black" />
         {playlists.map((playlist) => (
-          <p
+          <Text
             onClick={() => setPlaylistId(playlist.id)}
             key={playlist.id}
-            className="cursor-pointer"
+            tw="cursor-pointer"
           >
             {playlist.name}
-          </p>
+          </Text>
         ))}
-      </div>
-      <div
+      </FlexCol>
+      <ImageWrapper
         onClick={() => setCurrentImageState(!currentImageState)}
         className="relative h-[40vh] z-50 group cursor-pointer"
       >
         <img
-          className={`object-contain  ${
-            currentImageState ? "" : "hidden"
-          } transition-transform duration-150`}
+          className={`object-contain ${
+            currentImageState ? "" : "scale-[0.1] hidden"
+          } transition-transform duration-700 ease-linear
+          before:content-[''] before:absolute before:w-12 before:h-12 before:bg-red-500 before:rounded-full
+           before:blur before:left-0 before:top-0 before:animate-pulse
+          `}
           src={songInfo?.album.images?.[0]?.url}
           alt=""
         />
-        <div className="absolute top-1 flex items-center justify-center w-full">
+        <FlexRow className="absolute top-1 flex items-center justify-center w-full">
           <ChevronDoubleDownIcon className="w-5 hidden group-hover:inline text-white" />
-        </div>
-      </div>
-    </div>
+        </FlexRow>
+      </ImageWrapper>
+    </FlexCol>
   );
 }
 
