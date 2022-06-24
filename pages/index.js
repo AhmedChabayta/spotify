@@ -36,13 +36,11 @@ export default function Home() {
   }, [playlistId]);
 
   return (
-    <div
-      className={`bg-gradient-to-t text-white from-${fromColor} to-${toColor} h-screen overflow-hidden`}
-    >
+    <div className="bg-gray-900 h-screen overflow-hidden">
       <Head>
         <title>Spotify</title>
       </Head>
-      <main className="flex text-white">
+      <main className="flex text-white bg-gray-900">
         <Sidebar />
         <Center />
       </main>
