@@ -11,7 +11,7 @@ function Search() {
   const spotifyApi = useSpotify();
 
   const getTracks = async () => {
-    if (search?.length >= 5) {
+    if (search?.length >= 2) {
       spotifyApi
         .searchTracks(search)
         .then((res) => setPlaylist(res.body))
