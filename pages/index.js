@@ -8,43 +8,32 @@ import Player from "../components/Player";
 import Sidebar from "../components/Sidebar";
 
 const fromColors = [
-  "indigo-500",
-  "blue-500",
-  "green-500",
-  "red-500",
-  "pink-500",
-  "purple-500",
-  "fuchsia-500",
-];
-const toColors = [
-  "indigo-900",
-  "blue-900",
-  "green-900",
-  "red-900",
-  "pink-900",
-  "purple-900",
-  "fuchsia-900",
+  "from-indigo-900",
+  "from-blue-900",
+  "from-green-900",
+  "from-red-900",
+  "from-pink-900",
+  "from-purple-900",
+  "from-fuchsia-900",
 ];
 
 export default function Home() {
-  const [fromColor, setFromColor] = useState(null);
-  const [toColor, setToColor] = useState(null);
+  const [fromColor, setFromColor] = useState();
   const playlistId = useRecoilValue(playlistIdState);
   useEffect(() => {
     setFromColor(shuffle(fromColors).pop());
-    setToColor(shuffle(toColors).pop());
   }, [playlistId]);
 
   return (
-    <div className="bg-gray-900 h-screen overflow-hidden">
+    <div className="h-screen overflow-hidden">
       <Head>
         <title>Spotify</title>
       </Head>
-      <main className="flex text-white bg-gray-900">
+      <main className={`flex text-white bg-gradient-to-b ${fromColor} `}>
         <Sidebar />
         <Center />
       </main>
-      <div className="sticky bottom-0">
+      <div className="fixed bottom-0 w-screen">
         <Player />
       </div>
     </div>

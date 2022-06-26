@@ -1,5 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable @next/next/no-img-element */
 import { ChevronDownIcon } from "@heroicons/react/outline";
 import { useSession } from "next-auth/react";
 import React, { useEffect, useState } from "react";
@@ -25,7 +23,7 @@ function Center() {
         setPlaylist(data.body);
       })
       .catch((err) => console.log("Something went wrong", err));
-  }, [spotifyApi, playlistId]);
+  }, [spotifyApi, playlistId, setPlaylist]);
 
   console.log("PLAYLIST INFO", playlist);
   return (
@@ -62,10 +60,11 @@ function Center() {
                   : "PRIVATE PLAYLIST"
                 : ""}{" "}
             </Text>
-            <Text tw="text-4xl">{playlist?.description}</Text>
-            <h1 className="text-2xl md:text-3xl xl:text-5xl font-bold">
+
+            <h1 className="text-5xl md:text-6xl xl:text-7xl font-bold">
               {playlist?.name}
             </h1>
+            <Text tw="text-2xl">{playlist?.description}</Text>
           </FlexCol>
           <FlexRow tw="text-xs space-x-4">
             <Text>
@@ -75,7 +74,7 @@ function Center() {
           </FlexRow>
         </FlexCol>
       </FlexRow>
-      <Wrapper tw="border-t-white">
+      <Wrapper tw="border-t-white h-screen">
         <Songs />
       </Wrapper>
     </Wrapper>

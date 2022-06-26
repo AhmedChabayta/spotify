@@ -45,7 +45,10 @@ function Sidebar() {
   const songInfo = useSongInfo();
   console.log("PLAYLISTS", playlists);
   return (
-    <FlexCol tw="text-xs lg:text-sm min-w-[12rem] sm:max-w-[12rem] lg:max-w-[15rem] hidden md:flex font-black text-white">
+    <div
+      className="border-r-[2x] border-gray-500 h-screen justify-between
+     text-xs lg:text-sm min-w-[12rem] sm:max-w-[12rem] lg:max-w-[15rem] hidden md:flex flex-col text-white bg-black"
+    >
       <FlexCol
         className={`space-y-4 p-5 pb-10 items-start ${
           currentImageState ? "h-[60vh]" : "h-screen"
@@ -69,26 +72,25 @@ function Sidebar() {
           </Text>
         ))}
       </FlexCol>
-      <ImageWrapper
+      <span
         onClick={() => setCurrentImageState(!currentImageState)}
-        className="relative h-[40vh] z-50 group cursor-pointer"
+        className="flex items-end relative group cursor-pointer pb-20"
       >
         <img
           className={`object-contain ${
             currentImageState ? "" : "scale-[0.1] hidden"
-          } transition-transform duration-700 ease-linear
-          before:content-[''] before:absolute before:w-12 before:h-12 before:bg-red-500 before:rounded-full
-           before:blur before:left-0 before:top-0 before:animate-pulse
-          `}
+          } transition-transform duration-700 ease-linear`}
           src={songInfo?.album.images?.[0]?.url}
           alt=""
         />
-        <FlexRow className="absolute top-1 flex items-center justify-center w-full">
-          <ChevronDoubleDownIcon className="w-5 hidden group-hover:inline text-white" />
-        </FlexRow>
-      </ImageWrapper>
-    </FlexCol>
+      </span>
+    </div>
   );
 }
 
 export default Sidebar;
+{
+  /* <FlexRow className="absolute top-1 flex items-center justify-center w-full">
+  <ChevronDoubleDownIcon className="w-5 hidden group-hover:inline text-white" />
+</FlexRow>; */
+}

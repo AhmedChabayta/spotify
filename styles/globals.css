@@ -29,3 +29,7 @@ a {
 * {
   box-sizing: border-box;
 }
+
+.head_row {
+  padding-bottom: 100px;
+}
