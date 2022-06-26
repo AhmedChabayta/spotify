@@ -89,10 +89,7 @@ function Player() {
     []
   );
   return (
-    <Grid
-      tw="border-t-[0.1px] border-gray-500/50 relative h-20 font-bold text-white bg-black hover:bg-white hover:text-black transition-colors duration-150 
-      grid-cols-3 text-xs md:text-base px-2 md:px-8"
-    >
+    <Grid tw="border-t-[0.1px] border-gray-500/50 relative h-20 font-bold text-white bg-[#191414] grid-cols-3 text-xs md:text-base px-2 md:px-8">
       <FlexRow className="flex items-center space-x-4 ">
         <ImageWrapper
           onClick={() => setCurrentImageState(!currentImageState)}

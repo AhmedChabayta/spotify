@@ -8,13 +8,13 @@ import Songs from "./Songs";
 import { signOut } from "next-auth/react";
 import { FlexCol, FlexRow, Text, Wrapper } from "../styles/common.styles";
 import tw from "twin.macro";
+import SearchResults from "./SearchResults";
 
 function Center() {
   const { data: session } = useSession();
   const spotifyApi = useSpotify();
   const playlistId = useRecoilValue(playlistIdState);
   const [playlist, setPlaylist] = useRecoilState(playlistState);
-  console.log(playlist);
 
   useEffect(() => {
     spotifyApi
@@ -23,11 +23,11 @@ function Center() {
         setPlaylist(data.body);
       })
       .catch((err) => console.log("Something went wrong", err));
-  }, [spotifyApi, playlistId, setPlaylist]);
+  }, [spotifyApi, playlistId]);
 
   console.log("PLAYLIST INFO", playlist);
   return (
-    <Wrapper tw="flex-grow h-screen overflow-y-scroll overflow-x-hidden bg-transparent pb-28">
+    <Wrapper tw="flex-grow h-screen overflow-y-scroll scrollbar-hide overflow-x-hidden bg-transparent pb-28">
       <FlexRow tw="relative w-full items-end justify-end p-2">
         <FlexRow
           onClick={() => signOut()}
@@ -64,13 +64,24 @@ function Center() {
             <h1 className="text-5xl md:text-6xl xl:text-7xl font-bold">
               {playlist?.name}
             </h1>
-            <Text tw="text-2xl">{playlist?.description}</Text>
+            <Text tw="text-lg text-gray-900">{playlist?.description}</Text>
           </FlexCol>
-          <FlexRow tw="text-xs space-x-4">
+          <FlexRow tw="text-sm items-center space-x-4">
+            <span className="flex items-center">
+              {playlist?.owner?.display_name === "Spotify" ? (
+                <img
+                  className="w-10 object-contain"
+                  src="/Logo-Spotify.png"
+                  alt=""
+                />
+              ) : (
+                ""
+              )}
+              <h1 className="font-bold">{playlist?.owner?.display_name}</h1>
+            </span>
             <Text>
-              {playlist ? `${playlist?.followers.total} Followers` : ""}
+              {playlist ? `${playlist?.followers?.total} Followers` : ""}
             </Text>
-            <h1 className="font-bold">{playlist?.owner.display_name}</h1>
           </FlexRow>
         </FlexCol>
       </FlexRow>

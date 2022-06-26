@@ -26,6 +26,7 @@ import {
   Text,
 } from "../styles/common.styles";
 import tw from "twin.macro";
+import Search from "./Search";
 
 function Sidebar() {
   const spotifyApi = useSpotify();
@@ -43,11 +44,10 @@ function Sidebar() {
     }
   }, [session, spotifyApi]);
   const songInfo = useSongInfo();
-  console.log("PLAYLISTS", playlists);
   return (
     <div
       className="border-r-[2x] border-gray-500 h-screen justify-between
-     text-xs lg:text-sm min-w-[12rem] sm:max-w-[12rem] lg:max-w-[15rem] hidden md:flex flex-col text-white bg-black"
+     text-xs lg:text-sm w-10vw lg:w-[19vw] hidden lg:flex flex-col text-white bg-black"
     >
       <FlexCol
         className={`space-y-4 p-5 pb-10 items-start ${
@@ -55,7 +55,10 @@ function Sidebar() {
         } scrollbar-hide overflow-y-scroll`}
       >
         <ButtonsSidebar BtnText="Home" Icon={HomeIcon} />
-        <ButtonsSidebar BtnText="Search" Icon={SearchIcon} />
+        <div>
+          
+          <Search />
+        </div>
         <ButtonsSidebar BtnText="Library" Icon={LibraryIcon} />
         <ButtonsSidebar BtnText="Create Playlist" Icon={PlusCircleIcon} />
         <ButtonsSidebar BtnText="Liked Songs" Icon={HeartIcon} />
