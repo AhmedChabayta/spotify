@@ -14,7 +14,7 @@ import { useEffect, useState } from "react";
 import ButtonsSidebar from "./ButtonsSidebar";
 import useSpotify from "../hooks/useSpotify";
 import { useRecoilState } from "recoil";
-import { playlistIdState } from "../atoms/playlistAtom";
+import { featuredState, playlistIdState } from "../atoms/playlistAtom";
 import useSongInfo from "../hooks/useSongInfo";
 import { imageState } from "../atoms/sidebarAtom";
 import {
@@ -27,12 +27,14 @@ import {
 } from "../styles/common.styles";
 import tw from "twin.macro";
 import Search from "./Search";
+import FetchFeatured from './FetchFeatured';
 
 function Sidebar() {
   const spotifyApi = useSpotify();
   const { data: session, status } = useSession();
   const [playlists, setPlaylists] = useState([]);
   const [playlistId, setPlaylistId] = useRecoilState(playlistIdState);
+  const [featured, setFeatured] = useRecoilState(featuredState);
 
   const [currentImageState, setCurrentImageState] = useRecoilState(imageState);
 
@@ -56,10 +58,9 @@ function Sidebar() {
       >
         <ButtonsSidebar BtnText="Home" Icon={HomeIcon} />
         <div>
-          
           <Search />
         </div>
-        <ButtonsSidebar BtnText="Library" Icon={LibraryIcon} />
+        <FetchFeatured />
         <ButtonsSidebar BtnText="Create Playlist" Icon={PlusCircleIcon} />
         <ButtonsSidebar BtnText="Liked Songs" Icon={HeartIcon} />
         <ButtonsSidebar BtnText="Your Episodes" Icon={RssIcon} />

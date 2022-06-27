@@ -23,7 +23,6 @@ function Table({ track, order }) {
       uris: [track?.track?.uri || track?.uri],
     });
   };
-  console.log("CURRENT TRACK LIST", track);
   return (
     <tr onClick={playSong} className="cursor-pointer hover:bg-sky-500">
       <td className="flex items-center space-x-5 py-3 px-2">
@@ -36,7 +35,7 @@ function Table({ track, order }) {
           }
           alt=""
         />
-        <p>{track?.track?.name || track.album.name}</p>
+        <p>{track?.track?.name || track?.album?.name}</p>
       </td>
       <td>{track?.track?.album?.name || track?.album?.name}</td>
       <td>{track?.track?.album?.release_date || track?.album?.release_date}</td>

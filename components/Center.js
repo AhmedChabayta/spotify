@@ -9,6 +9,7 @@ import { signOut } from "next-auth/react";
 import { FlexCol, FlexRow, Text, Wrapper } from "../styles/common.styles";
 import tw from "twin.macro";
 import SearchResults from "./SearchResults";
+import Featured from "./Featured";
 
 function Center() {
   const { data: session } = useSession();
@@ -25,7 +26,6 @@ function Center() {
       .catch((err) => console.log("Something went wrong", err));
   }, [spotifyApi, playlistId]);
 
-  console.log("PLAYLIST INFO", playlist);
   return (
     <Wrapper tw="flex-grow h-screen overflow-y-scroll scrollbar-hide overflow-x-hidden bg-transparent pb-28">
       <FlexRow tw="relative w-full items-end justify-end p-2">
@@ -85,9 +85,13 @@ function Center() {
           </FlexRow>
         </FlexCol>
       </FlexRow>
-      <Wrapper tw="border-t-white h-screen">
-        <Songs />
-      </Wrapper>
+      {playlist ? (
+        <Wrapper tw="border-t-white h-screen">
+          <Songs />
+        </Wrapper>
+      ) : (
+        <Featured />
+      )}
     </Wrapper>
   );
 }
