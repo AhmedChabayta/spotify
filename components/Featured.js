@@ -17,21 +17,16 @@ function Featured() {
   const spotifyApi = useSpotify();
   const [featured, setFeatured] = useRecoilState(featuredState);
   useEffect(() => {
-    if (featured?.length === undefined) {
-      spotifyApi
-        .getFeaturedPlaylists({
-          limit: 3,
-          offset: 1,
-          country: "US",
-          locale: "en_US",
-          timestamp: "2014-10-23T09:00:00",
-        })
-        .then(() => setPlaylist())
-        .then((res) => setFeatured(res.body))
-        .catch((err) => console.error(err));
-    } else {
-      return;
-    }
+    spotifyApi
+      .getFeaturedPlaylists({
+        limit: 3,
+        offset: 0,
+        country: "LB",
+        locale: "lb_LB",
+      })
+      .then(() => setPlaylist())
+      .then((res) => setFeatured(res.body))
+      .catch((err) => console.error(err));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [spotifyApi, setFeatured]);
   console.log(featured);
@@ -40,7 +35,6 @@ function Featured() {
       className="flex flex-col space-x-2 w-screen
      bg-gradient-to-b from-gray-900/50 to-black/50 p-5 min-h-[100vh] pb-44"
     >
-      <h1 className="text-8xl p-5">{featured?.message}</h1>
       <div className="flex items-center space-x-2 mt-10">
         {featured?.playlists?.items.map((items, i) => (
           <div

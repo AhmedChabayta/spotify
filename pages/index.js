@@ -4,8 +4,11 @@ import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
 import { playlistIdState } from "../atoms/playlistAtom";
 import Center from "../components/Center";
+import Featured from "../components/Featured";
+import Latest from "../components/Latest";
 import Player from "../components/Player";
 import Sidebar from "../components/Sidebar";
+import useSpotify from "../hooks/useSpotify";
 
 const fromColors = [
   "from-indigo-900",
@@ -18,6 +21,8 @@ const fromColors = [
 ];
 
 export default function Home() {
+  const [latest, setLatest] = useState([]);
+  const spotifyApi = useSpotify();
   const [fromColor, setFromColor] = useState();
   const playlistId = useRecoilValue(playlistIdState);
   useEffect(() => {
@@ -25,17 +30,11 @@ export default function Home() {
   }, [playlistId]);
 
   return (
-    <div className="h-screen overflow-hidden">
-      <Head>
-        <title>Spotify</title>
-      </Head>
-      <main className={`flex text-white bg-gradient-to-b ${fromColor} `}>
-        <Sidebar />
-        <Center />
-      </main>
-      <div className="fixed bottom-0 w-screen">
-        <Player />
-      </div>
+    <div className="flex flex-col h-screen overflow-hidden">
+      {latest?.map((latest, i) => (
+        <Latest key={i} latest={latest} />
+      ))}
+      <Featured />
     </div>
   );
 }

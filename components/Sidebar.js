@@ -27,7 +27,8 @@ import {
 } from "../styles/common.styles";
 import tw from "twin.macro";
 import Search from "./Search";
-import FetchFeatured from './FetchFeatured';
+import FetchFeatured from "./FetchFeatured";
+import Link from "next/link";
 
 function Sidebar() {
   const spotifyApi = useSpotify();
@@ -47,33 +48,46 @@ function Sidebar() {
   }, [session, spotifyApi]);
   const songInfo = useSongInfo();
   return (
-    <div
-      className="border-r-[2x] border-gray-500 h-screen justify-between
-     text-xs lg:text-sm w-10vw lg:w-[19vw] hidden lg:flex flex-col text-white bg-black"
-    >
+    <div className="border-r-[2x] border-gray-500 max-w-[15vw] h-screen text-xs lg:text-sm hidden max-w-44 lg:flex flex-col text-white bg-black">
       <FlexCol
-        className={`space-y-4 p-5 pb-10 items-start ${
+        className={`space-y-4 p-5 pb-10 items-start whitespace-nowrap ${
           currentImageState ? "h-[60vh]" : "h-screen"
         } scrollbar-hide overflow-y-scroll`}
       >
-        <ButtonsSidebar BtnText="Home" Icon={HomeIcon} />
-        <div>
-          <Search />
-        </div>
-        <FetchFeatured />
+        <Link href="/">
+          <button className="flex space-x-2">
+            <HomeIcon className="w-5" />
+            <p>Home</p>
+          </button>
+        </Link>
+        <Link href="/search">
+          <button className="flex space-x-2">
+            <SearchIcon className="w-5" />
+            <p>Search</p>
+          </button>
+        </Link>
+        <Link href="/library">
+          <button className="flex space-x-2">
+            <LibraryIcon className="w-5" />
+            <p>Library</p>
+          </button>
+        </Link>
         <ButtonsSidebar BtnText="Create Playlist" Icon={PlusCircleIcon} />
         <ButtonsSidebar BtnText="Liked Songs" Icon={HeartIcon} />
         <ButtonsSidebar BtnText="Your Episodes" Icon={RssIcon} />
 
         <Hr tw="border-black" />
         {playlists.map((playlist) => (
-          <Text
-            onClick={() => setPlaylistId(playlist.id)}
-            key={playlist.id}
-            tw="cursor-pointer"
-          >
-            {playlist.name}
-          </Text>
+          <Link key={playlist.id} href="/playlists">
+            <span>
+              <Text
+                onClick={() => setPlaylistId(playlist.id)}
+                tw="cursor-pointer"
+              >
+                {playlist.name}
+              </Text>
+            </span>
+          </Link>
         ))}
       </FlexCol>
       <span

@@ -1,16 +1,14 @@
 /* eslint-disable @next/next/no-img-element */
 import { ChevronDownIcon } from "@heroicons/react/outline";
-import { useSession } from "next-auth/react";
-import React, { useEffect, useState } from "react";
-import useSpotify from "../hooks/useSpotify";
+import { signOut, useSession } from "next-auth/react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { playlistIdState, playlistState } from "../atoms/playlistAtom";
-import Songs from "./Songs";
-import { signOut } from "next-auth/react";
+import FetchFeatured from "../components/FetchFeatured";
+import useSpotify from "../hooks/useSpotify";
 import { FlexCol, FlexRow, Text, Wrapper } from "../styles/common.styles";
+import Songs from "../components/Songs";
+import { useEffect } from "react";
 import tw from "twin.macro";
-import SearchResults from "./SearchResults";
-import Featured from "./Featured";
 
 function Center() {
   const { data: session } = useSession();
@@ -24,26 +22,11 @@ function Center() {
       .then((data) => {
         setPlaylist(data.body);
       })
-      .catch((err) => console.log("Something went wrong", err));
+      .catch((err) => console.error("Something went wrong", err));
   }, [spotifyApi, playlistId]);
 
   return (
-    <Wrapper tw="flex-grow h-screen overflow-y-scroll scrollbar-hide overflow-x-hidden bg-transparent pb-28">
-      <FlexRow tw="relative w-full items-end justify-end p-2">
-        <FlexRow
-          onClick={() => signOut()}
-          tw="items-center space-x-3 opacity-90 hover:opacity-80
-        cursor-pointer rounded-full p-1 pr-2 text-white"
-        >
-          <img
-            className="rounded-full h-10 w-10"
-            src={session?.user.image}
-            alt=""
-          />
-          <h2>{session?.user.name}</h2>
-          <ChevronDownIcon className="h-5 w-5" />
-        </FlexRow>
-      </FlexRow>
+    <Wrapper tw="flex-grow w-full h-screen overflow-y-scroll scrollbar-hide overflow-x-hidden bg-transparent pb-28">
       <FlexRow tw="items-end space-x-7 p-8">
         <FlexCol>
           <img
@@ -91,7 +74,7 @@ function Center() {
           <Songs />
         </Wrapper>
       ) : (
-        <Featured />
+        ""
       )}
     </Wrapper>
   );
